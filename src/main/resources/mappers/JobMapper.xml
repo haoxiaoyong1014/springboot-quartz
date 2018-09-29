@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.quartz.dao.JobAndTriggerMapper">
+
+<!--    <select id="getJobAndTriggerDetails" resultType="com.example.quartz.model.JobAndTrigger">
+SELECT
+qrtz_job_details.JOB_NAME,
+qrtz_job_details.JOB_GROUP,
+qrtz_job_details.JOB_CLASS_NAME,
+qrtz_triggers.TRIGGER_NAME,
+qrtz_triggers.TRIGGER_GROUP,
+qrtz_simple_triggers.REPEAT_INTERVAL,
+qrtz_simple_triggers.TIMES_TRIGGERED
+FROM
+qrtz_job_details
+JOIN qrtz_triggers
+JOIN qrtz_simple_triggers ON qrtz_job_details.JOB_NAME = qrtz_triggers.JOB_NAME
+AND qrtz_triggers.TRIGGER_NAME = qrtz_simple_triggers.TRIGGER_NAME
+AND qrtz_triggers.TRIGGER_GROUP = qrtz_simple_triggers.TRIGGER_GROUP
+</select>-->
+    <select id="getJobAndTriggerDetails" resultType="com.example.quartz.model.JobAndTrigger">
+        SELECT
+        QRTZ_JOB_DETAILS.JOB_NAME,
+        QRTZ_JOB_DETAILS.JOB_GROUP,
+        QRTZ_JOB_DETAILS.JOB_CLASS_NAME,
+        QRTZ_TRIGGERS.TRIGGER_NAME,
+        QRTZ_TRIGGERS.TRIGGER_GROUP,
+        QRTZ_CRON_TRIGGERS.CRON_EXPRESSION,
+        QRTZ_CRON_TRIGGERS.TIME_ZONE_ID
+        FROM
+        QRTZ_JOB_DETAILS
+        JOIN QRTZ_TRIGGERS
+        JOIN QRTZ_CRON_TRIGGERS ON QRTZ_JOB_DETAILS.JOB_NAME = QRTZ_TRIGGERS.JOB_NAME
+        AND QRTZ_TRIGGERS.TRIGGER_NAME = QRTZ_CRON_TRIGGERS.TRIGGER_NAME
+        AND QRTZ_TRIGGERS.TRIGGER_GROUP = QRTZ_CRON_TRIGGERS.TRIGGER_GROUP
+    </select>
+</mapper>
+
+

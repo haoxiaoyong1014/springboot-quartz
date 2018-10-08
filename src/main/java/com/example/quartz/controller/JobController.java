@@ -1,19 +1,20 @@
 package com.example.quartz.controller;
 
 import com.example.quartz.model.JobAndTrigger;
+import com.example.quartz.model.JobInfo;
 import com.example.quartz.service.BaseJob;
 import com.example.quartz.service.IJobAndTriggerService;
+import com.example.quartz.tool.DateUnit;
 import com.github.pagehelper.PageInfo;
 import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.HashMap;
 import java.util.Map;
+import static org.quartz.DateBuilder.futureDate;
 
 /**
  * Created by haoxy on 2018/9/28.
@@ -31,6 +32,8 @@ public class JobController {
     @Autowired
     @Qualifier("Scheduler")
     private Scheduler scheduler;
+    @Autowired
+    private DateUnit dateUnit;
 
     private static Logger log = LoggerFactory.getLogger(JobController.class);
 
@@ -38,38 +41,62 @@ public class JobController {
     /**
      * 添加任务
      *
-     * @param jobClassName
-     * @param jobGroupName
-     * @param cronExpression
+     * @param jobInfo
      * @throws Exception
      */
     @PostMapping(value = "/addjob")
-    public void addjob(@RequestParam(value = "jobClassName") String jobClassName,
-                       @RequestParam(value = "jobGroupName") String jobGroupName,
-                       @RequestParam(value = "cronExpression") String cronExpression) throws Exception {
-        if ("".equals(jobClassName )|| "".equals(jobGroupName)|| "".equals(cronExpression)) {
+    public void addjob(@RequestBody JobInfo jobInfo) throws Exception {
+        if ("".equals(jobInfo.getJobClassName() )|| "".equals(jobInfo.getJobGroupName())|| "".equals(jobInfo.getCronExpression())) {
             return;
         }
-        addJob(jobClassName, jobGroupName, cronExpression);
+        addCronJob(jobInfo);
     }
-
-    public void addJob(String jobClassName, String jobGroupName, String cronExpression) throws Exception {
+    //CronTrigger
+    public void addCronJob(JobInfo jobInfo) throws Exception {
 
         // 启动调度器
         scheduler.start();
 
         //构建job信息
-        JobDetail jobDetail = JobBuilder.newJob(getClass(jobClassName).getClass()).withIdentity(jobClassName, jobGroupName).build();
+        JobDetail jobDetail = JobBuilder.newJob(getClass(jobInfo.getJobClassName()).getClass()).
+                withIdentity(jobInfo.getJobClassName(), jobInfo.getJobGroupName())
+                .build();
 
         //表达式调度构建器(即任务执行的时间)
-        CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(cronExpression);
-
+        CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(jobInfo.getCronExpression());
         //按新的cronExpression表达式构建一个新的trigger
-        CronTrigger trigger = TriggerBuilder.newTrigger().withIdentity(jobClassName, jobGroupName)
-                .withSchedule(scheduleBuilder).build();
+        CronTrigger trigger = TriggerBuilder.newTrigger().
+                withIdentity(jobInfo.getJobClassName(), jobInfo.getJobGroupName())
+                .withSchedule(scheduleBuilder)
+                .build();
 
         try {
             scheduler.scheduleJob(jobDetail, trigger);
+
+        } catch (SchedulerException e) {
+            System.out.println("创建定时任务失败" + e);
+            throw new Exception("创建定时任务失败");
+        }
+    }
+    //Simple Trigger
+    public void addSimpleJob(JobInfo jobInfo) throws Exception {
+        // 启动调度器
+        scheduler.start();
+
+        //构建job信息
+        JobDetail jobDetail = JobBuilder.newJob(getClass(jobInfo.getJobClassName()).getClass())
+                .withIdentity(jobInfo.getJobClassName(), jobInfo.getJobGroupName())
+                .build();
+
+        DateBuilder.IntervalUnit verDate = dateUnit.verification(jobInfo.getTimeType());
+        SimpleTrigger simpleTrigger = (SimpleTrigger) TriggerBuilder.newTrigger()
+                .withIdentity(jobInfo.getJobClassName(), jobInfo.getJobGroupName())
+                .startAt(futureDate(Integer.parseInt(jobInfo.getCronExpression()),verDate))
+                .forJob(jobInfo.getJobClassName(), jobInfo.getJobGroupName())
+                .build();
+
+        try {
+            scheduler.scheduleJob(jobDetail, simpleTrigger);
 
         } catch (SchedulerException e) {
             System.out.println("创建定时任务失败" + e);

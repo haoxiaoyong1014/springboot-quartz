@@ -1,8 +1,7 @@
 ### springboot-quartz
 
-springboot集成 quartz 
+#### springboot集成quartz 任务持久化
 
-#### 任务持久化
 
 * 启动项目
 
@@ -24,7 +23,7 @@ springboot集成 quartz
 
 在添加任务中的`表达式`你可以到 <a href="http://cron.qqe2.com/">这里自动生成</a> 
 
-#### 增加 SimpleTrigger
+### 增加 SimpleTrigger
 
 ![image](https://github.com/haoxiaoyong1014/best-pay-demo/raw/master/src/main/java/com/github/lly835/Images/q4.jpg)
 

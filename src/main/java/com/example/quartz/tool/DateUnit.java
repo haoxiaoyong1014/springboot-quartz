@@ -26,13 +26,13 @@ public class DateUnit {
                 DateBuilder.IntervalUnit hour = DateBuilder.IntervalUnit.HOUR;
                 return hour;
             case 5:
-                DateBuilder.IntervalUnit second = DateBuilder.IntervalUnit.SECOND;
+                DateBuilder.IntervalUnit second = DateBuilder.IntervalUnit.MINUTE;
                 return second;
             case 6:
                 DateBuilder.IntervalUnit week = DateBuilder.IntervalUnit.WEEK;
                 return week;
             default:
-                return DateBuilder.IntervalUnit.MINUTE;
+                return DateBuilder.IntervalUnit.SECOND;
         }
     }
 

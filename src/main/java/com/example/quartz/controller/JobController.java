@@ -12,8 +12,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.HashMap;
 import java.util.Map;
+
 import static org.quartz.DateBuilder.futureDate;
 
 /**
@@ -46,11 +48,16 @@ public class JobController {
      */
     @PostMapping(value = "/addjob")
     public void addjob(@RequestBody JobInfo jobInfo) throws Exception {
-        if ("".equals(jobInfo.getJobClassName() )|| "".equals(jobInfo.getJobGroupName())|| "".equals(jobInfo.getCronExpression())) {
+        if ("".equals(jobInfo.getJobClassName()) || "".equals(jobInfo.getJobGroupName()) || "".equals(jobInfo.getCronExpression())) {
             return;
         }
-        addCronJob(jobInfo);
+        if (jobInfo.getTimeType() == null) {
+            addCronJob(jobInfo);
+            return;
+        }
+        addSimpleJob(jobInfo);
     }
+
     //CronTrigger
     public void addCronJob(JobInfo jobInfo) throws Exception {
 
@@ -78,6 +85,7 @@ public class JobController {
             throw new Exception("创建定时任务失败");
         }
     }
+
     //Simple Trigger
     public void addSimpleJob(JobInfo jobInfo) throws Exception {
         // 启动调度器
@@ -91,7 +99,7 @@ public class JobController {
         DateBuilder.IntervalUnit verDate = dateUnit.verification(jobInfo.getTimeType());
         SimpleTrigger simpleTrigger = (SimpleTrigger) TriggerBuilder.newTrigger()
                 .withIdentity(jobInfo.getJobClassName(), jobInfo.getJobGroupName())
-                .startAt(futureDate(Integer.parseInt(jobInfo.getCronExpression()),verDate))
+                .startAt(futureDate(Integer.parseInt(jobInfo.getCronExpression()), verDate))
                 .forJob(jobInfo.getJobClassName(), jobInfo.getJobGroupName())
                 .build();
 

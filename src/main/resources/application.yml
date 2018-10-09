@@ -12,7 +12,7 @@ spring:
     name: sv
     url: jdbc:mysql://115.29.32.62:3306/quartz?useUnicode=true&characterEncoding=utf8
     username: root
-    password: root
+    password: 7d428bc667
     type: com.alibaba.druid.pool.DruidDataSource
 
 

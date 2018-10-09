@@ -116,8 +116,43 @@
             </el-pagination>
         </div>
     </div>
+    <el-dialog title="选择任务" :visible.sync="checkboxChange">
+            <el-radio-group v-model="ruleForm.resource">
+                <el-radio :label="3">Simple Trigger</el-radio>
+                <el-radio :label="6">Cron Trigger</el-radio>
+            </el-radio-group>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="checkboxChange = false">取 消</el-button>
+            <el-button type="primary" @click="change">确 定</el-button>
+        </div>
+    </el-dialog>
+    <el-dialog title="添加任务" :visible.sync="dialogFormVisibleChange" v-if="ruleForm.resource==3">
+        <el-form :model="form" >
+            <el-form-item label="任务名称" label-width="120px" style="width:35%">
+                <el-input v-model="form.jobName" auto-complete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="任务分组" label-width="120px" style="width:35%">
+                <el-input v-model="form.jobGroup" auto-complete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="多久之后执行" label-width="120px" style="width:35%">
+                <el-input v-model="form.cronExpression" auto-complete="off"></el-input>
 
-    <el-dialog title="添加任务" :visible.sync="dialogFormVisible">
+                <el-select v-model="value4"  placeholder="请选择">
+                    <el-option
+                            v-for="item in options"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                    </el-option>
+                </el-select>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisibleChange = false">取 消</el-button>
+            <el-button type="primary" @click="addSimTir">确 定</el-button>
+        </div>
+    </el-dialog>
+    <el-dialog title="添加任务" :visible.sync="dialogFormVisibleChange" v-if="ruleForm.resource==6">
         <el-form :model="form">
             <el-form-item label="任务名称" label-width="120px" style="width:35%">
                 <el-input v-model="form.jobName" auto-complete="off"></el-input>
@@ -130,7 +165,7 @@
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogFormVisible = false">取 消</el-button>
+            <el-button @click="dialogFormVisibleChange = false">取 消</el-button>
             <el-button type="primary" @click="add">确 定</el-button>
         </div>
     </el-dialog>
@@ -180,12 +215,20 @@
 
             //修改对话框默认可见性
             updateFormVisible: false,
+            //选择对话框
+            dialogFormVisibleChange: false,
+
+            checkboxChange:false,
 
             //提交的表单
             form: {
                 jobName: '',
                 jobGroup: '',
                 cronExpression: '',
+                timeType: ''
+            },
+            ruleForm: {
+                resource: 3
             },
 
             updateform: {
@@ -193,6 +236,29 @@
                 jobGroup: '',
                 cronExpression: '',
             },
+            options: [{
+                value: 1,
+                label: '年'
+            }, {
+                value: 2,
+                label: '月'
+            }, {
+                value: 3,
+                label: '天'
+            }, {
+                value: 4,
+                label: '小时'
+            }, {
+                value: 5,
+                label: '分钟'
+            }, {
+                value: 6,
+                label: '周'
+            },{
+              value: 7,
+              label: '秒'
+             }],
+            value4: ''
         },
         methods: {
 
@@ -241,14 +307,29 @@
 
             //弹出对话框
             handleadd: function(){
-                this.dialogFormVisible = true;
+                this.checkboxChange = true;
+            },
+            change: function(){
+                this.dialogFormVisibleChange = true;
             },
 
             //添加
             add: function(){
-                this.$http.post('job/addjob',{"jobClassName":this.form.jobName,"jobGroupName":this.form.jobGroup,"cronExpression":this.form.cronExpression},{emulateJSON: true}).then(function(res){
+                this.$http.post('job/addjob',{"jobClassName":this.form.jobName,"jobGroupName":this.form.jobGroup,"cronExpression":this.form.cronExpression}).then(function(res){
                     this.loadData(this.currentPage, this.pagesize);
-                    this.dialogFormVisible = false;
+                    this.dialogFormVisibleChange = false;
+                    this.checkboxChange = false;
+                },function(){
+                    console.log('failed');
+                });
+            },
+            addSimTir: function () {
+                console.log(this.value4)
+                this.$http.post('job/addjob',{"jobClassName":this.form.jobName,"jobGroupName":this.form.jobGroup,"cronExpression":this.form.cronExpression,
+                    "timeType":this.value4}).then(function(res){
+                    this.loadData(this.currentPage, this.pagesize);
+                    this.dialogFormVisibleChange = false;
+                    this.checkboxChange = false;
                 },function(){
                     console.log('failed');
                 });

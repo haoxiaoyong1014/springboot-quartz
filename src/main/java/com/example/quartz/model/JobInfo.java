@@ -19,7 +19,7 @@ public class JobInfo {
 
 
     public String getJobClassName() {
-        return jobClassName;
+        return "com.example.quartz.jobs."+jobClassName.trim();
     }
 
     public void setJobClassName(String jobClassName) {

@@ -10,9 +10,9 @@ springboot集成 quartz
 
 ![image](https://github.com/haoxiaoyong1014/best-pay-demo/raw/master/src/main/java/com/github/lly835/Images/q1.jpg)
 
-* 添加任务
+* 添加任务 
 
-![image](https://github.com/haoxiaoyong1014/best-pay-demo/raw/master/src/main/java/com/github/lly835/Images/q2.jpeg)
+![image](https://github.com/haoxiaoyong1014/best-pay-demo/raw/master/src/main/java/com/github/lly835/Images/q3.jpg)
 
 在添加任务的时候 `任务名称`一定要 带上包名,类名，通过反射得到该类, 由于NewJob和HelloJob都实现了BaseJob，
 
@@ -25,4 +25,13 @@ springboot集成 quartz
 在添加任务中的`表达式`你可以到 <a href="http://cron.qqe2.com/">这里自动生成</a> 
 
 #### 增加 SimpleTrigger
+
+![image](https://github.com/haoxiaoyong1014/best-pay-demo/raw/master/src/main/java/com/github/lly835/Images/q4.jpg)
+
+点击确定:
+
+![image](https://github.com/haoxiaoyong1014/best-pay-demo/raw/master/src/main/java/com/github/lly835/Images/q5.jpg)
+
+
+
 

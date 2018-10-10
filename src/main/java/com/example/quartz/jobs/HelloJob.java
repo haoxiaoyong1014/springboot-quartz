@@ -25,3 +25,4 @@ public class HelloJob implements BaseJob{
         log.info("Hello Job执行时间: " + new Date());
     }
 }
+

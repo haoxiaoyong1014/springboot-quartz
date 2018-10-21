@@ -13,7 +13,7 @@
 
 ![image](https://github.com/haoxiaoyong1014/best-pay-demo/raw/master/src/main/java/com/github/lly835/Images/q3.jpg)
 
-在添加任务的时候 `任务名称`一定要 带上包名,类名，通过反射得到该类, 由于NewJob和HelloJob都实现了BaseJob，
+在添加任务的时候 `任务名称`指定类名即可，通过反射得到该类, 由于NewJob和HelloJob都实现了BaseJob，
 
 所以这里不需要我们手动去判断。这里涉及到了一些java多态调用的机制
 

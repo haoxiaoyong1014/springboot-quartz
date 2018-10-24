@@ -17,7 +17,7 @@
 
 所以这里不需要我们手动去判断。这里涉及到了一些java多态调用的机制
 
-`任务名称`例如: `com.example.quartz.jobs.HelloJob`
+`任务名称`例如: `HelloJob`
 
 当然持久化也是将任务添加到数据库的,sql脚本在项目的跟目录下 <a href="https://github.com/HLW-Tec/springboot-quartz/blob/master/quartz.sql">quartz</a> (官方提供的sql脚本),
 

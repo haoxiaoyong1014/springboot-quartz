@@ -21,14 +21,11 @@ import java.util.Properties;
 @Configuration
 public class SchedulerConfig {
 
-   /* @Autowired
-    private JobFactory jobFactory;*/
 
     @Bean(name="SchedulerFactory")
     public SchedulerFactoryBean schedulerFactoryBean() throws IOException {
         SchedulerFactoryBean factory = new SchedulerFactoryBean();
         factory.setQuartzProperties(quartzProperties());
-        //factory.setJobFactory(jobFactory);
         return factory;
     }
 

@@ -99,7 +99,6 @@ public class JobController {
 
         DateBuilder.IntervalUnit verDate = dateUnit.verification(jobInfo.getTimeType());
         SimpleTrigger simpleTrigger = (SimpleTrigger) TriggerBuilder.newTrigger()
-
                 .withIdentity(jobInfo.getJobClassName(), jobInfo.getJobGroupName())
                 .startAt(futureDate(Integer.parseInt(jobInfo.getCronExpression()), verDate))
                 .forJob(jobInfo.getJobClassName(), jobInfo.getJobGroupName())

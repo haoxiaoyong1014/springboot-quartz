@@ -88,6 +88,7 @@ public class JobController {
 
     //Simple Trigger
     public void addSimpleJob(JobInfo jobInfo) throws Exception {
+
         // 启动调度器
         scheduler.start();
 
@@ -98,6 +99,7 @@ public class JobController {
 
         DateBuilder.IntervalUnit verDate = dateUnit.verification(jobInfo.getTimeType());
         SimpleTrigger simpleTrigger = (SimpleTrigger) TriggerBuilder.newTrigger()
+
                 .withIdentity(jobInfo.getJobClassName(), jobInfo.getJobGroupName())
                 .startAt(futureDate(Integer.parseInt(jobInfo.getCronExpression()), verDate))
                 .forJob(jobInfo.getJobClassName(), jobInfo.getJobGroupName())
@@ -105,6 +107,7 @@ public class JobController {
 
         try {
             scheduler.scheduleJob(jobDetail, simpleTrigger);
+
 
         } catch (SchedulerException e) {
             System.out.println("创建定时任务失败" + e);

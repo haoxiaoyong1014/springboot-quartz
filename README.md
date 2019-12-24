@@ -3,9 +3,9 @@
 #### springboot集成quartz 任务持久化
 
 
-[2019/9/1更新](#2019/9/1更新)
+[2019-9-1更新](#2019-9-1更新)
 
-[2019/12/24更新](#2019/12/24更新)
+[2019-12-24更新](#2019-12-24更新)
 
 * 启动项目
 
@@ -59,7 +59,7 @@ org.quartz.scheduler.instanceName
     }
 ```
 
-#### 2019/9/1更新
+#### 2019-9-1更新
 
 在我博客中有人评论说使用`SimpleTrigger`类型时存库不成功,在博客中我也回复了,在这里再统一说明一下,在使用`SimpleTrigger`时,要想看到效果就要把时间设置的长一些,
 因为定时任务执行完之后就会自动删除数据库中的记录;
@@ -84,7 +84,7 @@ AND QRTZ_TRIGGERS.TRIGGER_NAME = QRTZ_CRON_TRIGGERS.TRIGGER_NAME
 AND QRTZ_TRIGGERS.TRIGGER_GROUP = QRTZ_CRON_TRIGGERS.TRIGGER_GROUP
 ```
 
-### 2019/12/24更新
+#### 2019-12-24更新
 
 有评论说，在jobs里面@Autowired 注入service为null,今天主要解决这个问题,在JobController中弃用了反射,在tool包中加入了
 SpringUtil工具类;主要目的是从Bean容器中获取指定的Bean;

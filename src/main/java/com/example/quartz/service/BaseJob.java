@@ -4,6 +4,7 @@ package com.example.quartz.service;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.springframework.stereotype.Component;
 
 /**
  * Created by haoxy on 2018/9/28.

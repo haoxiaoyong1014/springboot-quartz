@@ -5,7 +5,9 @@ import com.example.quartz.model.JobInfo;
 import com.example.quartz.service.BaseJob;
 import com.example.quartz.service.IJobAndTriggerService;
 import com.example.quartz.tool.DateUnit;
+import com.example.quartz.tool.SpringUtil;
 import com.github.pagehelper.PageInfo;
+import com.sun.tracing.dtrace.ArgsAttributes;
 import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -219,14 +221,18 @@ public class JobController {
      * 根据类名称，通过反射得到该类，然后创建一个BaseJob的实例。
      * 由于NewJob和HelloJob都实现了BaseJob，
      * 所以这里不需要我们手动去判断。这里涉及到了一些java多态调用的机制
-     *
+     * 2019 12/24更新不再使用反射，使用SpringUtil工具类；
+     * 前提是具体的Job类必须交给Spring来管理;
+     * 例如：HelloJob 在其类上加上@Component("helloJob")注解，并指定传入Bean的名称；
      * @param classname
      * @return
      * @throws Exception
      */
-    public static BaseJob getClass(String classname) throws Exception {
-        Class<?> class1 = Class.forName(classname);
-        return (BaseJob) class1.newInstance();
+    public BaseJob getClass(String classname) throws Exception {
+        //Class<?> class1 = Class.forName(classname);
+        //BaseJob baseJob = (BaseJob) class1.newInstance();
+        BaseJob baseJob = (BaseJob) SpringUtil.getBean(classname);
+        return baseJob;
     }
 
 }

@@ -18,8 +18,11 @@ public class JobInfo {
     private Integer timeType;
 
 
-    public String getJobClassName() {
+   /* public String getJobClassName() {
         return "com.example.quartz.jobs."+jobClassName.trim();
+    }*/
+    public String getJobClassName() {
+        return jobClassName.trim();
     }
 
     public void setJobClassName(String jobClassName) {

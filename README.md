@@ -3,6 +3,10 @@
 #### springboot集成quartz 任务持久化
 
 
+[2019/9/1更新](#2019/9/1更新)
+
+[2019/12/24更新](#2019/12/24更新)
+
 * 启动项目
 
 * 输入 http://localhost:12741/JobManager.html 会看到这个页面,在这里可以看到你的所有任务
@@ -55,7 +59,7 @@ org.quartz.scheduler.instanceName
     }
 ```
 
-2019/9/1 更新:
+#### 2019/9/1更新
 
 在我博客中有人评论说使用`SimpleTrigger`类型时存库不成功,在博客中我也回复了,在这里再统一说明一下,在使用`SimpleTrigger`时,要想看到效果就要把时间设置的长一些,
 因为定时任务执行完之后就会自动删除数据库中的记录;
@@ -79,3 +83,43 @@ LEFT JOIN QRTZ_CRON_TRIGGERS ON QRTZ_JOB_DETAILS.JOB_NAME = QRTZ_TRIGGERS.JOB_NA
 AND QRTZ_TRIGGERS.TRIGGER_NAME = QRTZ_CRON_TRIGGERS.TRIGGER_NAME
 AND QRTZ_TRIGGERS.TRIGGER_GROUP = QRTZ_CRON_TRIGGERS.TRIGGER_GROUP
 ```
+
+### 2019/12/24更新
+
+有评论说，在jobs里面@Autowired 注入service为null,今天主要解决这个问题,在JobController中弃用了反射,在tool包中加入了
+SpringUtil工具类;主要目的是从Bean容器中获取指定的Bean;
+
+**JobController**
+```java
+public BaseJob getClass(String classname) throws Exception {
+        //Class<?> class1 = Class.forName(classname);
+        //BaseJob baseJob = (BaseJob) class1.newInstance();
+        BaseJob baseJob = (BaseJob) SpringUtil.getBean(classname);
+        return baseJob;
+    }
+```
+注意: 参数classnam是前端传过来的`任务名称`,注意这里的任务名称要和具体的Job类上的@Component注解中value值相同;
+例如：
+```java
+@Component("helloJob")
+public class HelloJob implements BaseJob {
+
+    private static Logger log = LoggerFactory.getLogger(HelloJob.class);
+
+    public HelloJob() {
+
+    }
+
+    @Override
+    public void execute(JobExecutionContext context) throws JobExecutionException {
+        IJobAndTriggerService iJobAndTriggerService = (IJobAndTriggerService) SpringUtil.getBean("IJobAndTriggerServiceImpl");
+        PageInfo<JobAndTrigger> jobAndTriggerDetails = iJobAndTriggerService.getJobAndTriggerDetails(1, 10);
+        System.out.println(jobAndTriggerDetails.getTotal());
+        log.info("Hello Job执行时间: " + new Date());
+    }
+}
+```
+这里是首字母小写;所以在前端的`任务名称`也要首字母小写;
+
+在上面的HelloJob中,使用SpringUtil工具类来获取具体的Service Bean;
+

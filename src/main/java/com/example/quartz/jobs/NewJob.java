@@ -20,11 +20,10 @@ public class NewJob implements BaseJob{
 
     private static Logger log = LoggerFactory.getLogger(NewJob.class);
 
-    public NewJob() {
-
-    }
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         log.info("New Job执行时间: " + DateFormatUtils.format(new Date(),"yyyy-MM-dd HH:mm:ss"));
     }
+
+    public NewJob() {}
 }

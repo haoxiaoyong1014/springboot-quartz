@@ -15,13 +15,17 @@
 
 * 添加任务 
 
-![image](https://github.com/haoxiaoyong1014/best-pay-demo/raw/master/src/main/java/com/github/lly835/Images/q3.jpg)
+![](http://cg-mall.oss-cn-shanghai.aliyuncs.com/blog/image-20201217122538397.png)
 
-在添加任务的时候 `任务名称`指定类名即可，通过反射得到该类, 由于NewJob和HelloJob都实现了BaseJob，
+![image](http://cg-mall.oss-cn-shanghai.aliyuncs.com/blog/image-20201217122910469.png)
+
+在添加任务的时候 `任务名称`指定类名即可，通过反射得到该类, 由于newJob和helloJob都实现了BaseJob，
 
 所以这里不需要我们手动去判断。这里涉及到了一些java多态调用的机制
 
-`任务名称`例如: `HelloJob`
+`任务名称`例如: `newJob`
+
+这里是首字母小写;所以在前端的`任务名称`也要首字母小写;
 
 当然持久化也是将任务添加到数据库的,sql脚本在项目的跟目录下 <a href="https://github.com/HLW-Tec/springboot-quartz/blob/master/quartz.sql">quartz</a> (官方提供的sql脚本),
 
@@ -29,11 +33,11 @@
 
 ### 增加 SimpleTrigger
 
-![image](https://github.com/haoxiaoyong1014/best-pay-demo/raw/master/src/main/java/com/github/lly835/Images/q4.jpg)
+![image](http://cg-mall.oss-cn-shanghai.aliyuncs.com/blog/image-20201217123126052.png)
 
 点击确定:
 
-![image](https://github.com/haoxiaoyong1014/best-pay-demo/raw/master/src/main/java/com/github/lly835/Images/q5.jpg)
+![image](http://cg-mall.oss-cn-shanghai.aliyuncs.com/blog/image-20201217123305348.png)
 
 更新:
 

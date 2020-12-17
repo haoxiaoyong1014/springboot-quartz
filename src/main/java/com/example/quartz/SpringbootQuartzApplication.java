@@ -8,7 +8,6 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication(scanBasePackages={"com.example.quartz"})
 @MapperScan("com.example.quartz.dao")
-//@ComponentScan("com.example.quartz")
 public class SpringbootQuartzApplication {
 
 	public static void main(String[] args) {

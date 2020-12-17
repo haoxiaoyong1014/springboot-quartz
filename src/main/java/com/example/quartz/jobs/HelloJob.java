@@ -27,10 +27,6 @@ public class HelloJob implements BaseJob {
 
     private static Logger log = LoggerFactory.getLogger(HelloJob.class);
 
-    public HelloJob() {
-
-    }
-
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         IJobAndTriggerService iJobAndTriggerService = (IJobAndTriggerService) SpringUtil.getBean("IJobAndTriggerServiceImpl");
@@ -38,5 +34,7 @@ public class HelloJob implements BaseJob {
         System.out.println(jobAndTriggerDetails.getTotal());
         log.info("Hello Job执行时间: " + DateFormatUtils.format(new Date(),"yyyy-MM-dd HH:mm:ss"));
     }
+
+    public HelloJob() {}
 }
 

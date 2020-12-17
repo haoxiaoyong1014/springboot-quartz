@@ -1,6 +1,7 @@
 package com.example.quartz.jobs;
 
 import com.example.quartz.service.BaseJob;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
@@ -24,6 +25,6 @@ public class NewJob implements BaseJob{
     }
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        log.info("Hello Job执行时间: " + new Date());
+        log.info("New Job执行时间: " + DateFormatUtils.format(new Date(),"yyyy-MM-dd HH:mm:ss"));
     }
 }

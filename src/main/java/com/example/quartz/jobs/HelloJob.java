@@ -5,6 +5,7 @@ import com.example.quartz.service.BaseJob;
 import com.example.quartz.service.IJobAndTriggerService;
 import com.example.quartz.tool.SpringUtil;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
@@ -35,7 +36,7 @@ public class HelloJob implements BaseJob {
         IJobAndTriggerService iJobAndTriggerService = (IJobAndTriggerService) SpringUtil.getBean("IJobAndTriggerServiceImpl");
         PageInfo<JobAndTrigger> jobAndTriggerDetails = iJobAndTriggerService.getJobAndTriggerDetails(1, 10);
         System.out.println(jobAndTriggerDetails.getTotal());
-        log.info("Hello Job执行时间: " + new Date());
+        log.info("Hello Job执行时间: " + DateFormatUtils.format(new Date(),"yyyy-MM-dd HH:mm:ss"));
     }
 }
 
